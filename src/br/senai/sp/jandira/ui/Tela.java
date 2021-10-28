@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListModel;
 
 import br.senai.sp.jandira.model.Calculador;
 
@@ -58,17 +59,18 @@ public class Tela {
 		btnLimpar.setForeground(Color.white);
 		btnLimpar.setBackground(Color.red);
 
+		JScrollPane scroll = new JScrollPane();
+		scroll.setBounds(290, 80, 160, 245);
+
+		DefaultListModel<String []> modelList = new DefaultListModel<String []>();
+
+		JList<String[]> lstResultados = new JList<>(modelList);
+		scroll.getViewport().add(lstResultados);
+
 		JLabel lblResultado = new JLabel("Resultado:");
 		lblResultado.setBounds(290, 60, 100, 20);
 		lblResultado.setFont(new Font("Serif", Font.BOLD, 14));
 		lblResultado.setForeground(lightBlue);
-
-		DefaultListModel<String> listModel = new DefaultListModel<String>();
-		JList<String> lstTabuada = new JList<>(listModel);
-		lstTabuada.setBounds(290, 80, 160, 245);
-
-		JScrollPane scrollPane = new JScrollPane(lstTabuada);
-		scrollPane.setBounds(290, 80, 160, 245);
 
 		tela.getContentPane().add(lblTitulo);
 		tela.getContentPane().add(lblMultiplicando);
@@ -78,7 +80,9 @@ public class Tela {
 		tela.getContentPane().add(btnCalcular);
 		tela.getContentPane().add(btnLimpar);
 		tela.getContentPane().add(lblResultado);
-		tela.getContentPane().add(scrollPane);
+		tela.getContentPane().add(scroll);
+
+		tela.setVisible(true);
 
 		btnCalcular.addActionListener(new ActionListener() {
 
@@ -88,13 +92,14 @@ public class Tela {
 				int multiplicando = Integer.parseInt(txtMultiplicando.getText());
 				int multiplicador = Integer.parseInt(txtMultiplicador.getText());
 
-				int contador = 0;
-
+				//tente criar o array dentro do evento, aqui jsjs
+				
+				
 				Calculador calculador = new Calculador();
 
-				for (contador = 0; contador <= multiplicador; contador++) {
+				for (int contador = 0; contador <= multiplicador; contador++) {
 					calculador.setResultado(multiplicando, contador);
-					listModel.addElement(multiplicando + " X " + contador + " = " + calculador.getResultado());
+
 
 				}
 
@@ -105,8 +110,8 @@ public class Tela {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				listModel.clear();
-				lstTabuada.setModel(listModel);
+				modelList.clear();
+				lstResultados.setModel(modelList);
 				txtMultiplicando.grabFocus();
 				txtMultiplicando.setText(null);
 				txtMultiplicador.setText(null);
@@ -114,7 +119,6 @@ public class Tela {
 			}
 		});
 
-		tela.setVisible(true);
 	}
 
 }
